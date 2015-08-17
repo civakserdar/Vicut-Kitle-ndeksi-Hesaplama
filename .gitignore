@@ -1,0 +1,224 @@
+package example.com.uygun_kilo_bulma;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
+
+/**
+ * Created by GIS1 on 17.08.2015.
+ */
+public class TurkClass extends Activity {
+    EditText num1;
+    EditText num2;
+    EditText num3;
+    float count =0;
+    float BKI=0;
+    View.OnClickListener checkBoxListener;
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.turkce);
+        final Button button1 = (Button) findViewById(R.id.Turk);
+        final Button button3 = (Button) findViewById(R.id.button3);
+        final Button tavsiye = (Button) findViewById(R.id.Bilgi);
+        final CheckBox checkBox1 = (CheckBox) findViewById(R.id.checkBox1);
+        final EditText num1 = (EditText) findViewById(R.id.num1);
+        final EditText num2 = (EditText) findViewById(R.id.num2);
+        final EditText num3 = (EditText) findViewById(R.id.num3);
+        final CheckBox checkBox2 = (CheckBox) findViewById(R.id.checkBox2);
+        final TextView textView8 = (TextView) findViewById(R.id.textView8);
+        final TextView textView7 = (TextView) findViewById(R.id.textView7);
+        final TextView textView6 = (TextView) findViewById(R.id.textView6);
+        checkBox1.setChecked(true);
+        checkBoxListener = new View.OnClickListener(){
+            public void onClick(View v)
+            {
+                if(checkBox1.isChecked() && count == 1){
+                    count=0;
+                    checkBox2.setChecked(false);
+                }
+                if(checkBox2.isChecked())
+                {
+                    count=1;
+                    checkBox1.setChecked(false);
+                }
+            }
+        };
+        View.OnClickListener button_click = new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(checkBox1.isChecked())
+                {
+                    float result = 0;
+                    float etnum1=0;
+                    float etnum2=0;
+                    float etnum3=0;
+                    if (TextUtils.isEmpty(num1.getText().toString())
+                            || TextUtils.isEmpty(num2.getText().toString())
+                            || TextUtils.isEmpty(num3.getText().toString())) {
+                        textView8.setText("Lütfen boş alanları doldurunuz");
+                        return;
+                    }
+                    etnum1 = Float.parseFloat(num1.getText().toString());
+                    etnum2 = Float.parseFloat(num2.getText().toString());
+                    etnum3 = Float.parseFloat(num3.getText().toString());
+                    result = (float) ((etnum1 - 100)*0.9);
+                    textView6.setText(" "+ result);
+                }
+                if(checkBox2.isChecked())
+                {
+                    float result = 0;
+                    float etnum1=0;
+                    float etnum2=0;
+                    float etnum3=0;
+                    if (TextUtils.isEmpty(num1.getText().toString())
+                            || TextUtils.isEmpty(num2.getText().toString())
+                            || TextUtils.isEmpty(num3.getText().toString())) {
+                        textView8.setText("Lütfen boş alanları doldurunuz");
+                        return;
+                    }
+                    etnum1 = Float.parseFloat(num1.getText().toString());
+                    etnum2 = Float.parseFloat(num2.getText().toString());
+                    etnum3 = Float.parseFloat(num3.getText().toString());
+                    result = (float) ((etnum1 - 100)*0.85);
+                    textView6.setText(" "+ result);
+                }
+                float etnum1=0;
+                float etnum2=0;
+                float etnum3=0;
+                etnum1 = Float.parseFloat(num1.getText().toString());
+                etnum2 = Float.parseFloat(num2.getText().toString());
+                etnum3 = Float.parseFloat(num3.getText().toString());
+                if(etnum3 < 18 || etnum3 > 46)
+                {
+                    textView8.setText("Bu test 18-46 yaşlar için");
+                    textView6.setText("");
+                    textView7.setText("");
+                    return;
+                }
+                if(etnum1 < 168 && checkBox1.isChecked())
+                {
+                    BKI = (float) ((etnum2/(etnum1*etnum1/10000)) + (0.1*(etnum2/(etnum1*etnum1/10000))));
+                    textView7.setText(" "+ BKI);
+                }
+                if(etnum1 > 188 && checkBox1.isChecked())
+                {
+                    BKI = (float) ((etnum2/(etnum1*etnum1/10000)) - (0.1*(etnum2/(etnum1*etnum1/10000))));
+                    textView7.setText(" "+ BKI);
+                }
+                if(etnum1 < 154 && checkBox2.isChecked())
+                {
+                    BKI = (float) ((etnum2/(etnum1*etnum1/10000)) + (0.1*(etnum2/(etnum1*etnum1/10000))));
+                    textView7.setText(" "+ BKI);
+                }
+                if(etnum1 > 174 && checkBox2.isChecked())
+                {
+                    BKI = (float) ((etnum2/(etnum1*etnum1/10000)) - (0.1*(etnum2/(etnum1*etnum1/10000))));
+                    textView7.setText(" "+ BKI);
+                }
+                if(etnum1 >= 168 && etnum1 <= 188 && checkBox1.isChecked())
+                {
+                    BKI = (float) ((etnum2/(etnum1*etnum1/10000)));
+                    textView7.setText(" "+ BKI);
+                }
+                if(etnum1 >= 154 && etnum1 <= 174 && checkBox2.isChecked())
+                {
+                    BKI = (float) ((etnum2/(etnum1*etnum1/10000)));
+                    textView7.setText(" "+ BKI);
+                }
+                if(etnum3 >= 18 && etnum3 <= 46)
+                {
+                    if(BKI<=17.5)
+                    {
+                        textView8.setText("Anoreksi. Aşırı zayıf. Yüksek risk.");
+                    }
+                    if(BKI>=17.5 && BKI<=19.1 && checkBox2.isChecked())
+                    {
+                        textView8.setText("Zayıf.");
+                    }
+                    if(BKI>=17.5 && BKI<=20.7 && checkBox1.isChecked())
+                    {
+                        textView8.setText("Zayıf.");
+                    }
+                    if(BKI>=19.1 && BKI<=25.8 && checkBox2.isChecked())
+                    {
+                        textView8.setText("Normal aralık (ideal kilo)");
+                    }
+                    if(BKI>=20.7 && BKI<=26.4 && checkBox1.isChecked())
+                    {
+                        textView8.setText("Normal aralık (ideal kilo)");
+                    }
+                    if(BKI>=25.8 && BKI<=27.3 && checkBox2.isChecked())
+                    {
+                        textView8.setText("Biraz kilo fazlası.");
+                    }
+                    if(BKI>=26.4 && BKI<=27.8 && checkBox1.isChecked())
+                    {
+                        textView8.setText("Biraz kilo fazlası.");
+                    }
+                    if(BKI>=27.3 && BKI<=32.3 && checkBox2.isChecked())
+                    {
+                        textView8.setText("Fazla kilo.");
+                    }
+                    if(BKI>=27.8 && BKI<=31.1 && checkBox1.isChecked())
+                    {
+                        textView8.setText("Fazla kilo.");
+                    }
+                    if(BKI>=32.3 && BKI<=34.9 && checkBox2.isChecked())
+                    {
+                        textView8.setText("Çok fazla kilolu.");
+                    }
+                    if(BKI>=31.1 && BKI<=34.9 && checkBox1.isChecked())
+                    {
+                        textView8.setText("Çok fazla kilolu.");
+                    }
+                    if(BKI>=35 && BKI<=40)
+                    {
+                        textView8.setText("Sağlık açısından yüksek risk.");
+                    }
+                    if(BKI>=40 && BKI<=50)
+                    {
+                        textView8.setText("Hastalıklı bir şekilde aşırı kilolu.");
+                    }
+                    if(BKI>=50 && BKI<=60)
+                    {
+                        textView8.setText("Süper aşırı kilolu..");
+                    }
+                }
+            }
+        };
+        View.OnClickListener button_click3 = new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                textView6.setText("");
+                textView7.setText("");
+                textView8.setText("");
+                num1.setText("");
+                num2.setText("");
+                num3.setText("");
+                num1.requestFocus();
+                checkBox1.setChecked(true);
+                checkBox2.setChecked(false);
+            }
+        };
+        View.OnClickListener tavsiye_click = new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent();
+                i.setClass(getApplicationContext(),TavsiyeClass.class);
+                startActivity(i);
+            }
+        };
+        tavsiye.setOnClickListener(tavsiye_click);
+        checkBox1.setOnClickListener(checkBoxListener);
+        checkBox2.setOnClickListener(checkBoxListener);
+        button1.setOnClickListener(button_click);
+        button3.setOnClickListener(button_click3);
+    }
+}
